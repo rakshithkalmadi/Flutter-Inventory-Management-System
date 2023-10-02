@@ -56,7 +56,8 @@ This will open after the user selects the item puchased by the customer. Here it
 10. <b>Warehouse details : </b>
 This window contains the information rgarding which section of the warehouse contains what items.
 
-![Screenshot 2023-10-02 201628](https://github.com/rakshithkalmadi/Flutter-Inventory-Management-System/assets/118717426/0522eb04-e8b1-4c94-8970-69c11a6b0261)
+![Screenshot 2023-10-02 201815](https://github.com/rakshithkalmadi/Flutter-Inventory-Management-System/assets/118717426/f513b157-8ebe-48f5-b1f1-8188d7261d35)
+
 
 
 
