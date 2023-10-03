@@ -25,7 +25,7 @@ class SplashScreenState extends State<SplashScreen> {
     });
 
     // Navigate to the next page after animation
-    Timer(const Duration(seconds: 2), () {
+    Timer(const Duration(seconds: 3), () {
       FirstTimeExecution().checkAndNavigate(context);
     });
   }
@@ -33,13 +33,14 @@ class SplashScreenState extends State<SplashScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: const Color(0xFFD3FFD8),
       body: Center(
         child: AnimatedContainer(
           duration: const Duration(seconds: 2),
           curve: Curves.easeInOut,
-          width: _isPopped ? 200.0 : 100.0,
-          height: _isPopped ? 200.0 : 100.0,
-          child: Image.asset('assets/splash_image.png'), // Replace with your image
+          width: _isPopped ? 400.0 : 50.0,
+          height: _isPopped ? 400.0 : 50.0,
+          child: Image.asset('assets/splashscreen.png'), // Replace with your image
         ),
       ),
     );
