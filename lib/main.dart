@@ -30,6 +30,7 @@ class SplashScreenState extends State<SplashScreen> {
     });
   }
 
+  // Display the splash screen with the animated image
   @override
   Widget build(BuildContext context) {
     return Scaffold(

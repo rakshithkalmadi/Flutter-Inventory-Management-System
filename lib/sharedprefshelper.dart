@@ -45,6 +45,7 @@ class SharedPreferencesHelper {
     return prefs.getString(_securityAnswerKey);
   }
 
+  // Update the new password
   static Future<void> updatePassword(String newPassword) async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
      prefs.setString(_passwordKey, newPassword);

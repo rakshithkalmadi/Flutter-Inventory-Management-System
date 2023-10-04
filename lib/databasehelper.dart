@@ -1,4 +1,5 @@
 import 'package:sqflite/sqflite.dart';
+// ignore: depend_on_referenced_packages
 import 'package:path/path.dart';
 class DatabaseHelper {
   static final DatabaseHelper _instance = DatabaseHelper._internal();
@@ -15,13 +16,14 @@ class DatabaseHelper {
     return _database!;
   }
 
+  //Initialize the database
   Future<Database> initDatabase() async {
     final databasesPath = await getDatabasesPath();
-    final path = join(databasesPath, 'your_database.db');
+    final path = join(databasesPath, 'inventory.db');
 
     return await openDatabase(
       path,
-      version: 1, // You can change the database version if needed
+      version: 1,
       onCreate: (Database db, int version) async {
         // Create the table
         await db.execute('''
@@ -41,12 +43,14 @@ class DatabaseHelper {
     );
   }
 
+  // Function to insert a record into database
   Future<void> insertRecord(Map<String, dynamic> record) async {
     final db = await database;
     await db.insert('your_table', record,
         conflictAlgorithm: ConflictAlgorithm.replace);
   }
 
+  // Function to retrieve the records from the database
   Future<List<Map<String, dynamic>>> getAllRecords() async {
     final db = await database;
     return await db.query('your_table');

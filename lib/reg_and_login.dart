@@ -14,19 +14,19 @@ class FirstTimeExecution {
     // Check if the flag indicating first-time execution is set
     bool isFirstTime = prefs.getBool('isFirstTime') ?? true;
 
-    // Navigate to the appropriate page based on the first-time flag
+    // Navigate to the registration page based on the first-time flag
     if (isFirstTime) {
       Navigator.of(context).pushReplacement(MaterialPageRoute(
-        builder: (_) =>  RegistrationPage(pref:prefs),
+        builder: (_) => RegistrationPage(pref: prefs),
       ));
     } else {
+      // Navigate to login page from second time onwards
       Navigator.of(context).pushReplacement(MaterialPageRoute(
-        builder: (_) => LoginPage(pref:prefs),
+        builder: (_) => LoginPage(pref: prefs),
       ));
     }
   }
 }
-
 
 class RegistrationPage extends StatefulWidget {
   final SharedPreferences pref;
@@ -61,29 +61,38 @@ class RegistrationPageState extends State<RegistrationPage> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 const Text(
-                    "REGISTER",
+                  "REGISTER",
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
                     color: Colors.white,
                     fontSize: 28,
                   ),
                 ),
-                const SizedBox(height: 30,),
+                const SizedBox(
+                  height: 30,
+                ),
                 TextFormField(
-
                   controller: _nameController,
                   decoration: InputDecoration(
-                    fillColor: const Color(0xFFD9D9D9), // Set the background color
+                    fillColor:
+                        const Color(0xFFD9D9D9), // Set the background color
                     filled: true,
                     labelText: 'Username',
-                    labelStyle: const TextStyle(color: Color.fromRGBO(0, 0, 0, 0.68),fontWeight: FontWeight.bold),
+                    labelStyle: const TextStyle(
+                        color: Color.fromRGBO(0, 0, 0, 0.68),
+                        fontWeight: FontWeight.bold),
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(20.0),
                     ),
                   ),
                   validator: (value) {
+                    //To check whether user had entered username or not
                     if (value == null || value.isEmpty) {
-                      return 'Please enter a username';
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                          content: Text('Enter valid Username'),
+                        ),
+                      );
                     }
                     return null;
                   },
@@ -92,17 +101,24 @@ class RegistrationPageState extends State<RegistrationPage> {
                 TextFormField(
                   controller: _passwordController,
                   decoration: InputDecoration(
-                    fillColor: const Color(0xFFD9D9D9), // Set the background color
+                    fillColor:
+                        const Color(0xFFD9D9D9), // Set the background color
                     filled: true,
                     labelText: 'Password',
-                    labelStyle: const TextStyle(color: Color.fromRGBO(0, 0, 0, 0.68),fontWeight: FontWeight.bold),
+                    labelStyle: const TextStyle(
+                        color: Color.fromRGBO(0, 0, 0, 0.68),
+                        fontWeight: FontWeight.bold),
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(20.0),
                     ),
                   ),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
-                      return 'Please enter a password';
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                          content: Text('Please enter password'),
+                        ),
+                      );
                     }
                     return null;
                   },
@@ -111,17 +127,24 @@ class RegistrationPageState extends State<RegistrationPage> {
                 TextFormField(
                   controller: _securityQuestionController,
                   decoration: InputDecoration(
-                    fillColor: const Color(0xFFD9D9D9), // Set the background color
+                    fillColor:
+                        const Color(0xFFD9D9D9), // Set the background color
                     filled: true,
                     labelText: 'Security Question',
-                    labelStyle: const TextStyle(color: Color.fromRGBO(0, 0, 0, 0.68),fontWeight: FontWeight.bold),
+                    labelStyle: const TextStyle(
+                        color: Color.fromRGBO(0, 0, 0, 0.68),
+                        fontWeight: FontWeight.bold),
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(20.0),
                     ),
                   ),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
-                      return 'Please enter a security question';
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                          content: Text('Please enter Security Question'),
+                        ),
+                      );
                     }
                     return null;
                   },
@@ -130,17 +153,24 @@ class RegistrationPageState extends State<RegistrationPage> {
                 TextFormField(
                   controller: _securityAnswerController,
                   decoration: InputDecoration(
-                    fillColor: const Color(0xFFD9D9D9), // Set the background color
+                    fillColor:
+                        const Color(0xFFD9D9D9), // Set the background color
                     filled: true,
                     labelText: 'Security Answer',
-                    labelStyle: const TextStyle(color: Color.fromRGBO(0, 0, 0, 0.68),fontWeight: FontWeight.bold),
+                    labelStyle: const TextStyle(
+                        color: Color.fromRGBO(0, 0, 0, 0.68),
+                        fontWeight: FontWeight.bold),
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(20.0),
                     ),
                   ),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
-                      return 'Please enter a security answer';
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                          content: Text('Please enter security answer'),
+                        ),
+                      );
                     }
                     return null;
                   },
@@ -172,11 +202,15 @@ class RegistrationPageState extends State<RegistrationPage> {
                             actions: [
                               TextButton(
                                 onPressed: () {
+                                  // Close the current dialog box
                                   Navigator.of(context).pop();
+                                  //Navigate to login page after entering all details
                                   Navigator.pushReplacement(
                                     context,
                                     MaterialPageRoute(
-                                      builder: (context) => LoginPage(pref: widget.pref,),
+                                      builder: (context) => LoginPage(
+                                        pref: widget.pref,
+                                      ),
                                     ),
                                   );
                                 },
@@ -189,9 +223,11 @@ class RegistrationPageState extends State<RegistrationPage> {
                     }
                   },
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color(0xFF47BCAE), // Change the button color
+                    backgroundColor:
+                        const Color(0xFF47BCAE), // Change the button color
                     shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(20.0), // Add border radius here
+                      borderRadius:
+                          BorderRadius.circular(20.0), // Add border radius here
                     ),
                   ),
                   child: const Text(
@@ -221,7 +257,7 @@ class RegistrationPageState extends State<RegistrationPage> {
 
 class LoginPage extends StatefulWidget {
   final SharedPreferences pref;
-  const LoginPage({Key? key,required this.pref}) : super(key: key);
+  const LoginPage({Key? key, required this.pref}) : super(key: key);
 
   @override
   LoginPageState createState() => LoginPageState();
@@ -231,10 +267,12 @@ class LoginPageState extends State<LoginPage> {
   final _formKey = GlobalKey<FormState>();
   final _nameController = TextEditingController();
   final _passwordController = TextEditingController();
-  final Future<String?> username=SharedPreferencesHelper.getUsername();
-  final Future<String?> password=SharedPreferencesHelper.getPassword() ;
-  final Future<String?> securityquestion=SharedPreferencesHelper.getSecurityQuestion() ;
-  final Future<String?> securityanswer=SharedPreferencesHelper.getSecurityAnswer() ;
+  final Future<String?> username = SharedPreferencesHelper.getUsername();
+  final Future<String?> password = SharedPreferencesHelper.getPassword();
+  final Future<String?> securityquestion =
+      SharedPreferencesHelper.getSecurityQuestion();
+  final Future<String?> securityanswer =
+      SharedPreferencesHelper.getSecurityAnswer();
 
   @override
   Widget build(BuildContext context) {
@@ -281,7 +319,11 @@ class LoginPageState extends State<LoginPage> {
                   ),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
-                      return 'Please enter a username';
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                          content: Text('Please enter username'),
+                        ),
+                      );
                     }
                     return null;
                   },
@@ -303,7 +345,11 @@ class LoginPageState extends State<LoginPage> {
                   ),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
-                      return 'Please enter a password';
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                          content: Text('Please enter password'),
+                        ),
+                      );
                     }
                     return null;
                   },
@@ -316,10 +362,10 @@ class LoginPageState extends State<LoginPage> {
                       final eusername = _nameController.text;
                       final epassword = _passwordController.text;
                       // If successful, navigate to the next screen
-                      Future<bool> loginSuccessful = validateLogin(eusername, epassword);
-
+                      Future<bool> loginSuccessful =
+                          validateLogin(eusername, epassword);
                       if (await loginSuccessful) {
-                        String? name=await username;
+                        String? name = await username;
                         // Navigate to the next screen or show a success message
                         showDialog(
                           context: context,
@@ -333,9 +379,9 @@ class LoginPageState extends State<LoginPage> {
                                     Navigator.pushAndRemoveUntil(
                                       context,
                                       MaterialPageRoute(
-                                        builder: (context) => HomePage(),
+                                        builder: (context) => const HomePage(),
                                       ),
-                                          (Route<dynamic> route) => false,
+                                      (Route<dynamic> route) => false,
                                     );
                                   },
                                   child: const Text('OK'),
@@ -351,11 +397,18 @@ class LoginPageState extends State<LoginPage> {
                           builder: (BuildContext context) {
                             return AlertDialog(
                               title: const Text('Login Failed'),
-                              content: const Text('Invalid username or password.'),
+                              content:
+                                  const Text('Invalid username or password.'),
                               actions: [
                                 TextButton(
                                   onPressed: () {
-                                    Navigator.of(context).pop();
+                                    Navigator.pushAndRemoveUntil(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => const HomePage(),
+                                      ),
+                                      (Route<dynamic> route) => false,
+                                    );
                                   },
                                   child: const Text('OK'),
                                 ),
@@ -381,8 +434,8 @@ class LoginPageState extends State<LoginPage> {
                 ),
                 TextButton(
                   onPressed: () async {
-                    TextEditingController inputans= TextEditingController();
-                    String? secque = await securityquestion;
+                    TextEditingController inputans = TextEditingController();
+                    String? securityque = await securityquestion;
                     // Show a dialog to enter security answer
                     showDialog(
                       context: context,
@@ -392,24 +445,20 @@ class LoginPageState extends State<LoginPage> {
                           content: Column(
                             mainAxisSize: MainAxisSize.min,
                             children: [
-                              Text('Security Question: $secque'), // Replace with your security question
+                              Text(
+                                  'Security Question: $securityque'), // Replace with your security question
                               TextFormField(
                                 controller: inputans,
                                 decoration: const InputDecoration(
                                   labelText: 'Security Answer',
                                 ),
-                                validator: (value) {
-                                  if (value == null || value.isEmpty) {
-                                    return 'Please enter an answer';
-                                  }
-                                  return null;
-                                },
                               ),
                             ],
                           ),
                           actions: [
                             TextButton(
                               onPressed: () {
+                                // Close the current dialog box
                                 Navigator.of(context).pop();
                               },
                               child: const Text('Cancel'),
@@ -419,14 +468,15 @@ class LoginPageState extends State<LoginPage> {
                                 // Get the entered answer from the TextEditingController
                                 String enteredAnswer = inputans.text;
                                 Navigator.of(context).pop();
-
+                                // If entered answer is correct then allow user to login
                                 if (await checkSecurityAnswer(enteredAnswer)) {
                                   showDialog(
                                     context: context,
                                     builder: (BuildContext context) {
                                       return AlertDialog(
                                         title: const Text('Success'),
-                                        content: const Text('You can reset your password now.'),
+                                        content: const Text(
+                                            'You can reset your password now.'),
                                         actions: [
                                           TextButton(
                                             onPressed: () {
@@ -439,18 +489,16 @@ class LoginPageState extends State<LoginPage> {
                                     },
                                   );
                                 } else {
+                                  //give the message that answer is incorrect
                                   ScaffoldMessenger.of(context).showSnackBar(
                                     const SnackBar(
                                       content: Text('Incorrect answer.'),
                                     ),
                                   );
                                 }
-
-                                 // Close the dialog
                               },
                               child: const Text('Submit'),
                             ),
-
                           ],
                         );
                       },
@@ -465,25 +513,25 @@ class LoginPageState extends State<LoginPage> {
       ),
     );
   }
-  Future<bool> validateLogin( String eusername, String epassword) async{
-    String? uname= await username;
-    String? pswd=await password;
-    if(eusername==uname&&epassword==pswd) {
+
+  //Function that validates whether the credentials entered by the user is correct or not
+  Future<bool> validateLogin(String eusername, String epassword) async {
+    String? uname = await username;
+    String? pswd = await password;
+    if (eusername == uname && epassword == pswd) {
       return true;
-    }
-    else {
-      return false;// Return true if login is successful, false otherwise
+    } else {
+      return false; // Return true if login is successful, false otherwise
     }
   }
 
+  // Function that validates  whether the input answer is correct or not
   Future<bool> checkSecurityAnswer(String answer) async {
-    String? ans=await securityanswer;
-    if(answer==ans) {
+    String? ans = await securityanswer;
+    if (answer == ans) {
       return true; // Return true if the answer is correct, false otherwise
-    }
-    else{
+    } else {
       return false;
     }
   }
 }
-

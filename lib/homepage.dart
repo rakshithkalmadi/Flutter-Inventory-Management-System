@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'sharedprefshelper.dart';
 
 class HomePage extends StatelessWidget {
-
   const HomePage({super.key});
+  // Homepage that will display the options of the functionalities offered by the application
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -27,6 +27,7 @@ class HomePage extends StatelessWidget {
             ),
             ListTile(
               title: const Text('Reset Password'),
+              leading: const Icon(Icons.key),
               onTap: () {
                 showDialog(
                   context: context,
@@ -40,14 +41,8 @@ class HomePage extends StatelessWidget {
                         children: [
                           TextFormField(
                             controller: newPasswordController,
-                            decoration:
-                                const InputDecoration(labelText: 'New Password'),
-                            validator: (value) {
-                              if (value == null || value.isEmpty) {
-                                return 'Please enter a new password';
-                              }
-                              return null;
-                            },
+                            decoration: const InputDecoration(
+                                labelText: 'New Password'),
                           ),
                         ],
                       ),
@@ -60,16 +55,17 @@ class HomePage extends StatelessWidget {
                         ),
                         ElevatedButton(
                           onPressed: () async {
+                            // Close the current dialog box
                             Navigator.of(context).pop();
-                              String newPassword = newPasswordController.text;
-                              await SharedPreferencesHelper.updatePassword(
-                                  newPassword);
-                              // ignore: use_build_context_synchronously
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(
-                                  content: Text('Password changed'),
-                                ),
-                              );
+                            String newPassword = newPasswordController.text;
+                            await SharedPreferencesHelper.updatePassword(
+                                newPassword);
+                            // ignore: use_build_context_synchronously
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                content: Text('Password changed'),
+                              ),
+                            );
                           },
                           child: const Text('Reset'),
                         ),
@@ -83,7 +79,7 @@ class HomePage extends StatelessWidget {
           ],
         ),
       ),
-      body: SingleChildScrollView(
+      body: SingleChildScrollView( // List of functionalities
         child: Column(
           children: [
             buildCard(
@@ -128,6 +124,8 @@ class HomePage extends StatelessWidget {
     );
   }
 
+
+  //Widget that build the custom designed cards
   Widget buildCard({
     required String title,
     required String imageAsset,
