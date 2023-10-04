@@ -43,14 +43,14 @@ class DatabaseHelper {
     );
   }
 
-  // Function to insert a record into database
+  // Function to insert a record into table
   Future<void> insertRecord(Map<String, dynamic> record) async {
     final db = await database;
     await db.insert('tyre_inventory', record,
         conflictAlgorithm: ConflictAlgorithm.replace);
   }
 
-  // Function to retrieve the records from the database
+  // Function to retrieve the records from the table
   Future<List<Map<String, dynamic>>> getAllRecords() async {
     final db = await database;
     return await db.query('tyre_inventory');
