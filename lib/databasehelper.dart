@@ -27,7 +27,7 @@ class DatabaseHelper {
       onCreate: (Database db, int version) async {
         // Create the table
         await db.execute('''
-          CREATE TABLE your_table (
+          CREATE TABLE tyre_inventory (
             id INTEGER PRIMARY KEY,
             brand TEXT,
             design TEXT,
@@ -46,13 +46,13 @@ class DatabaseHelper {
   // Function to insert a record into database
   Future<void> insertRecord(Map<String, dynamic> record) async {
     final db = await database;
-    await db.insert('your_table', record,
+    await db.insert('tyre_inventory', record,
         conflictAlgorithm: ConflictAlgorithm.replace);
   }
 
   // Function to retrieve the records from the database
   Future<List<Map<String, dynamic>>> getAllRecords() async {
     final db = await database;
-    return await db.query('your_table');
+    return await db.query('tyre_inventory');
   }
 }
