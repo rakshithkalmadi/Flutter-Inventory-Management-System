@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'sharedprefshelper.dart';
+import 'homepage.dart';
 
 class FirstTimeExecution {
   Future<void> checkAndNavigate(BuildContext context) async {
@@ -48,8 +49,8 @@ class RegistrationPageState extends State<RegistrationPage> {
       body: Container(
         decoration: const BoxDecoration(
           image: DecorationImage(
-            image: AssetImage('assets/loginbg.jpg'), // Replace with your image asset path
-            fit: BoxFit.cover, // You can adjust the fit as needed
+            image: AssetImage('assets/loginbg.jpg'),
+            fit: BoxFit.cover,
           ),
         ),
         child: Padding(
@@ -153,7 +154,7 @@ class RegistrationPageState extends State<RegistrationPage> {
                       final securityQuestion = _securityQuestionController.text;
                       final securityAnswer = _securityAnswerController.text;
 
-                      // Call a function from your shared preferences helper class to save the data
+                      // Call a function from shared preferences helper class to save the data
                       await SharedPreferencesHelper.saveUserData(
                         name,
                         password,
@@ -244,7 +245,7 @@ class LoginPageState extends State<LoginPage> {
         // Background decoration
         decoration: const BoxDecoration(
           image: DecorationImage(
-            image: AssetImage('assets/loginbg.jpg'), // Replace with your image asset path
+            image: AssetImage('assets/loginbg.jpg'),
             fit: BoxFit.cover,
           ),
         ),
@@ -314,8 +315,6 @@ class LoginPageState extends State<LoginPage> {
                     if (_formKey.currentState!.validate()) {
                       final eusername = _nameController.text;
                       final epassword = _passwordController.text;
-
-                      // Call a function to validate username and password
                       // If successful, navigate to the next screen
                       Future<bool> loginSuccessful = validateLogin(eusername, epassword);
 
@@ -331,7 +330,13 @@ class LoginPageState extends State<LoginPage> {
                               actions: [
                                 TextButton(
                                   onPressed: () {
-                                    Navigator.of(context).pop();
+                                    Navigator.pushAndRemoveUntil(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => HomePage(),
+                                      ),
+                                          (Route<dynamic> route) => false,
+                                    );
                                   },
                                   child: const Text('OK'),
                                 ),
@@ -376,7 +381,8 @@ class LoginPageState extends State<LoginPage> {
                 ),
                 TextButton(
                   onPressed: () async {
-                    String? secque=await securityquestion;
+                    TextEditingController inputans= TextEditingController();
+                    String? secque = await securityquestion;
                     // Show a dialog to enter security answer
                     showDialog(
                       context: context,
@@ -388,6 +394,7 @@ class LoginPageState extends State<LoginPage> {
                             children: [
                               Text('Security Question: $secque'), // Replace with your security question
                               TextFormField(
+                                controller: inputans,
                                 decoration: const InputDecoration(
                                   labelText: 'Security Answer',
                                 ),
@@ -396,39 +403,6 @@ class LoginPageState extends State<LoginPage> {
                                     return 'Please enter an answer';
                                   }
                                   return null;
-                                },
-                                onSaved: (value) async {
-                                  // Check if the answer is correct and perform actions accordingly
-                                  Future<bool> answerCorrect = checkSecurityAnswer(value!);
-
-                                  if (await answerCorrect) {
-                                    // Navigate to password reset or show a success message
-                                    Navigator.of(context).pop();
-                                    showDialog(
-                                      context: context,
-                                      builder: (BuildContext context) {
-                                        return AlertDialog(
-                                          title: const Text('Success'),
-                                          content: const Text('You can reset your password now.'),
-                                          actions: [
-                                            TextButton(
-                                              onPressed: () {
-                                                Navigator.of(context).pop();
-                                              },
-                                              child: const Text('OK'),
-                                            ),
-                                          ],
-                                        );
-                                      },
-                                    );
-                                  } else {
-                                    // Show an error message
-                                    ScaffoldMessenger.of(context).showSnackBar(
-                                      const SnackBar(
-                                        content: Text('Incorrect answer.'),
-                                      ),
-                                    );
-                                  }
                                 },
                               ),
                             ],
@@ -441,13 +415,42 @@ class LoginPageState extends State<LoginPage> {
                               child: const Text('Cancel'),
                             ),
                             ElevatedButton(
-                              onPressed: () {
-                                if (_formKey.currentState!.validate()) {
-                                  _formKey.currentState!.save();
+                              onPressed: () async {
+                                // Get the entered answer from the TextEditingController
+                                String enteredAnswer = inputans.text;
+                                Navigator.of(context).pop();
+
+                                if (await checkSecurityAnswer(enteredAnswer)) {
+                                  showDialog(
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      return AlertDialog(
+                                        title: const Text('Success'),
+                                        content: const Text('You can reset your password now.'),
+                                        actions: [
+                                          TextButton(
+                                            onPressed: () {
+                                              Navigator.of(context).pop();
+                                            },
+                                            child: const Text('OK'),
+                                          ),
+                                        ],
+                                      );
+                                    },
+                                  );
+                                } else {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    const SnackBar(
+                                      content: Text('Incorrect answer.'),
+                                    ),
+                                  );
                                 }
+
+                                 // Close the dialog
                               },
                               child: const Text('Submit'),
                             ),
+
                           ],
                         );
                       },
@@ -462,8 +465,6 @@ class LoginPageState extends State<LoginPage> {
       ),
     );
   }
-
-  // Implement your login validation logic here
   Future<bool> validateLogin( String eusername, String epassword) async{
     String? uname= await username;
     String? pswd=await password;
@@ -475,7 +476,6 @@ class LoginPageState extends State<LoginPage> {
     }
   }
 
-  // Implement your security answer validation logic here
   Future<bool> checkSecurityAnswer(String answer) async {
     String? ans=await securityanswer;
     if(answer==ans) {

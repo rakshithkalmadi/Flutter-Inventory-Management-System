@@ -44,4 +44,9 @@ class SharedPreferencesHelper {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     return prefs.getString(_securityAnswerKey);
   }
+
+  static Future<void> updatePassword(String newPassword) async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+     prefs.setString(_passwordKey, newPassword);
+  }
 }
