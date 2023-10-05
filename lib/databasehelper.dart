@@ -55,4 +55,16 @@ class DatabaseHelper {
     final db = await database;
     return await db.query('tyre_inventory');
   }
+
+  // Function to update the quantity
+  Future<void> updateQuantity(int id, int newQuantity) async {
+    final db = await database;
+    await db.update(
+      'tyre_inventory',
+      {'quantity': newQuantity},
+      where: 'id = ?',
+      whereArgs: [id],
+    );
+  }
+
 }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'sharedprefshelper.dart';
+import 'purchaseorder.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -75,18 +76,22 @@ class HomePage extends StatelessWidget {
                 ); // Close the drawer
               },
             ),
-            // Add more drawer items as needed
           ],
         ),
       ),
-      body: SingleChildScrollView( // List of functionalities
+      body: SingleChildScrollView(
+        // List of functionalities
         child: Column(
           children: [
             buildCard(
               title: 'Purchase Order',
-              imageAsset: 'assets/buying.jpg', // Replace with your image asset
+              imageAsset: 'assets/buying.jpg',
               onTap: () {
-                // Add your action for the Sales Order card here
+                // Navigate to the Purchase order page
+                Navigator.of(context).push(
+                    MaterialPageRoute(
+                        builder: (_) => const RecordListPage())
+                );
               },
               height: 81,
               width: 133,
@@ -123,7 +128,6 @@ class HomePage extends StatelessWidget {
       ),
     );
   }
-
 
   //Widget that build the custom designed cards
   Widget buildCard({
