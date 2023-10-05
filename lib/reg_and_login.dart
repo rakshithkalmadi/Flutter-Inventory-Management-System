@@ -402,13 +402,7 @@ class LoginPageState extends State<LoginPage> {
                               actions: [
                                 TextButton(
                                   onPressed: () {
-                                    Navigator.pushAndRemoveUntil(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) => const HomePage(),
-                                      ),
-                                      (Route<dynamic> route) => false,
-                                    );
+                                    Navigator.of(context).pop();
                                   },
                                   child: const Text('OK'),
                                 ),
@@ -480,7 +474,13 @@ class LoginPageState extends State<LoginPage> {
                                         actions: [
                                           TextButton(
                                             onPressed: () {
-                                              Navigator.of(context).pop();
+                                              Navigator.pushAndRemoveUntil(
+                                                context,
+                                                MaterialPageRoute(
+                                                  builder: (context) => const HomePage(),
+                                                ),
+                                                    (Route<dynamic> route) => false,
+                                              );
                                             },
                                             child: const Text('OK'),
                                           ),
