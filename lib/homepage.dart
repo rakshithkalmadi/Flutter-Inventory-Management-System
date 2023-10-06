@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'sharedprefshelper.dart';
 import 'purchaseorder.dart';
+import 'stocks.dart';
+import 'warehouse.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -98,15 +100,19 @@ class HomePage extends StatelessWidget {
             ),
             buildCard(
                 title: 'Inventory Details',
-                imageAsset: 'assets/stock.jpg', // Replace with your image asset
+                imageAsset: 'assets/stock.jpg',
                 onTap: () {
-                  // Add your action for the Stock Details card here
+                  // Navigate to the Inventory details page
+                  Navigator.of(context).push(
+                      MaterialPageRoute(
+                          builder: (_) => const StockRecordListPage())
+                  );
                 },
                 height: 99,
                 width: 148),
             buildCard(
               title: 'Sales Order',
-              imageAsset: 'assets/selling.jpg', // Replace with your image asset
+              imageAsset: 'assets/selling.jpg',
               onTap: () {
                 // Add your action for the Purchase Order card here
               },
@@ -116,9 +122,13 @@ class HomePage extends StatelessWidget {
             buildCard(
               title: 'Warehouse Details',
               imageAsset:
-                  'assets/warehouse.jpg', // Replace with your image asset
+                  'assets/warehouse.jpg',
               onTap: () {
-                // Add your action for the Warehouse Details card here
+                // Navigate to the warehouse details page
+                Navigator.of(context).push(
+                    MaterialPageRoute(
+                        builder: (_) => const WarehousePage())
+                );
               },
               height: 97,
               width: 163,
