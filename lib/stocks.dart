@@ -1,36 +1,21 @@
 // ignore_for_file: use_build_context_synchronously
 
 import 'package:flutter/material.dart';
+import 'package:flutter_ims/editrecord.dart';
 import 'databasehelper.dart';
-import 'addorder.dart';
+import 'records.dart';
 
-class Record {
-  final int id;
-  final String brand;
-  final String design;
-  final String size;
-  final int quantity;
-
-  Record({
-    required this.id,
-    required this.brand,
-    required this.design,
-    required this.size,
-    required this.quantity,
-  });
-}
-
-class RecordListPage extends StatefulWidget {
-  const RecordListPage({super.key});
+class StockRecordListPage extends StatefulWidget {
+  const StockRecordListPage({super.key});
 
   @override
-  RecordListPageState createState() => RecordListPageState();
+  StockRecordListPageState createState() => StockRecordListPageState();
 }
 
-class RecordListPageState extends State<RecordListPage> {
+class StockRecordListPageState extends State<StockRecordListPage> {
   List<Record> records = [];
 
-  // Callback function to refresh data
+  // Function to refresh the page
   void refreshData() {
     fetchRecordsFromDatabase();
   }
@@ -56,6 +41,10 @@ class RecordListPageState extends State<RecordListPage> {
           brand: maps[index]['brand'],
           design: maps[index]['design'],
           size: maps[index]['size'],
+          supplier: maps[index]['supplier'],
+          warehouseSection: maps[index]['warehouse_section'],
+          costPrice: maps[index]['cost_price'],
+          sellingPrice: maps[index]['selling_price'],
           quantity: maps[index]['quantity'],
         );
       });
@@ -82,7 +71,8 @@ class RecordListPageState extends State<RecordListPage> {
       appBar: AppBar(
         backgroundColor: const Color(0xFF48CC56),
         title: isSearch
-            ? TextField( // Search bar in the appbar
+            ? TextField(
+                // Search bar in the appbar
                 controller: searchcontroller,
                 onChanged: (value) {
                   setState(() {
@@ -121,7 +111,7 @@ class RecordListPageState extends State<RecordListPage> {
                   ),
                 ),
               )
-            : const Text("Purchase Order"),
+            : const Text("Stock In Inventory"),
         actions: <Widget>[
           Visibility(
             visible: !isSearch,
@@ -136,19 +126,6 @@ class RecordListPageState extends State<RecordListPage> {
                   });
                 }),
           ),
-          IconButton(
-              icon: const Icon(
-                Icons.add,
-                color: Colors.white,
-              ),
-              onPressed: () {
-                // Navigate to Add new record page
-                Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (_) =>  AddRecordPage(refreshData: refreshData),
-                  ),
-                );
-              }),
         ],
       ),
       body: getFilteredCards().isEmpty
@@ -167,56 +144,17 @@ class RecordListPageState extends State<RecordListPage> {
                   ? records.length
                   : getFilteredCards().length,
               itemBuilder: (context, index) {
-                final record = searchQuery.isEmpty? records[index]:getFilteredCards()[index];
+                final record = searchQuery.isEmpty
+                    ? records[index]
+                    : getFilteredCards()[index];
                 return GestureDetector(
                   onTap: () {
-                    // Show a dialog to enter the quantity
-                    showDialog(
-                      context: context,
-                      builder: (context) {
-                        int inputQuantity = 0;
-                        return AlertDialog(
-                          title: const Text('Enter Purchase Quantity'),
-                          content: Column(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              TextFormField(
-                                keyboardType: TextInputType.number,
-                                onChanged: (value) {
-                                  inputQuantity = int.tryParse(value) ?? 0;
-                                },
-                                decoration: const InputDecoration(
-                                  labelText: 'Quantity',
-                                ),
-                              ),
-                            ],
-                          ),
-                          actions: [
-                            TextButton(
-                              onPressed: () {
-                                Navigator.of(context).pop();
-                              },
-                              child: const Text('Cancel'),
-                            ),
-                            ElevatedButton(
-                              onPressed: () async {
-                                // Update the quantity in the database
-                                final dbHelper = DatabaseHelper();
-                                final updatedQuantity =
-                                    record.quantity + inputQuantity;
-                                await dbHelper.updateQuantity(
-                                    record.id, updatedQuantity);
-
-                                // Refresh the record list
-                                fetchRecordsFromDatabase();
-
-                                Navigator.of(context).pop(); // Close the dialog
-                              },
-                              child: const Text('Submit'),
-                            ),
-                          ],
-                        );
-                      },
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (_) => EditRecordPage(
+                            refreshData: fetchRecordsFromDatabase,
+                            record: record),
+                      ),
                     );
                   },
                   child: Card(
@@ -226,9 +164,14 @@ class RecordListPageState extends State<RecordListPage> {
                     ),
                     color: const Color(0xFF55C47B),
                     child: ListTile(
-                      title:
-                      Text('${record.brand} - ${record.design} - ${record.size}',
-                      style: const TextStyle(color: Colors.white),),
+                      title: Text(
+                        '${record.brand} - ${record.design} - ${record.size}',
+                        style: const TextStyle(color: Colors.white),
+                      ),
+                      subtitle: Text(
+                        'Quantity: ${record.quantity}',
+                        style: const TextStyle(color: Colors.white),
+                      ),
                     ),
                   ),
                 );

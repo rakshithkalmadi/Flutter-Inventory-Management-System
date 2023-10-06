@@ -67,4 +67,18 @@ class DatabaseHelper {
     );
   }
 
+  // Function to update the required records
+  Future<void> updateRecord(Map<String, dynamic> updatedRecord) async {
+    final db = await database;
+
+    // Update the record in the database table
+    await db.update(
+      'tyre_inventory', // Replace with your table name
+      updatedRecord,
+      where: 'id = ?', // Replace 'id' with your primary key column name
+      whereArgs: [updatedRecord['id']],
+    );
+  }
+
+
 }
