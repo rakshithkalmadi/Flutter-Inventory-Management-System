@@ -42,6 +42,12 @@ class RegistrationPageState extends State<RegistrationPage> {
   final _passwordController = TextEditingController();
   final _securityQuestionController = TextEditingController();
   final _securityAnswerController = TextEditingController();
+  final _proprietorNameController = TextEditingController();
+  final _addressController = TextEditingController();
+  final _phoneNumberController = TextEditingController();
+  final _emailController = TextEditingController();
+  final _gstNumberController = TextEditingController();
+  final _firmNameController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -85,17 +91,6 @@ class RegistrationPageState extends State<RegistrationPage> {
                       borderRadius: BorderRadius.circular(20.0),
                     ),
                   ),
-                  validator: (value) {
-                    //To check whether user had entered username or not
-                    if (value == null || value.isEmpty) {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(
-                          content: Text('Enter valid Username'),
-                        ),
-                      );
-                    }
-                    return null;
-                  },
                 ),
                 const SizedBox(height: 10),
                 TextFormField(
@@ -112,16 +107,6 @@ class RegistrationPageState extends State<RegistrationPage> {
                       borderRadius: BorderRadius.circular(20.0),
                     ),
                   ),
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(
-                          content: Text('Please enter password'),
-                        ),
-                      );
-                    }
-                    return null;
-                  },
                 ),
                 const SizedBox(height: 10),
                 TextFormField(
@@ -138,16 +123,6 @@ class RegistrationPageState extends State<RegistrationPage> {
                       borderRadius: BorderRadius.circular(20.0),
                     ),
                   ),
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(
-                          content: Text('Please enter Security Question'),
-                        ),
-                      );
-                    }
-                    return null;
-                  },
                 ),
                 const SizedBox(height: 10),
                 TextFormField(
@@ -164,16 +139,103 @@ class RegistrationPageState extends State<RegistrationPage> {
                       borderRadius: BorderRadius.circular(20.0),
                     ),
                   ),
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(
-                          content: Text('Please enter security answer'),
-                        ),
-                      );
-                    }
-                    return null;
-                  },
+                ),
+                const SizedBox(height: 10),
+                TextFormField(
+                  controller: _firmNameController,
+                  decoration: InputDecoration(
+                    fillColor:
+                    const Color(0xFFD9D9D9), // Set the background color
+                    filled: true,
+                    labelText: 'Firm Name',
+                    labelStyle: const TextStyle(
+                        color: Color.fromRGBO(0, 0, 0, 0.68),
+                        fontWeight: FontWeight.bold),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(20.0),
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 10),
+                TextFormField(
+                  controller: _proprietorNameController,
+                  decoration: InputDecoration(
+                    fillColor:
+                    const Color(0xFFD9D9D9), // Set the background color
+                    filled: true,
+                    labelText: 'Proprietor Name',
+                    labelStyle: const TextStyle(
+                        color: Color.fromRGBO(0, 0, 0, 0.68),
+                        fontWeight: FontWeight.bold),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(20.0),
+                    ),
+                  ),
+                ),
+
+                const SizedBox(height: 10),
+                TextFormField(
+                  controller: _addressController,
+                  decoration: InputDecoration(
+                    fillColor:
+                    const Color(0xFFD9D9D9), // Set the background color
+                    filled: true,
+                    labelText: 'Address',
+                    labelStyle: const TextStyle(
+                        color: Color.fromRGBO(0, 0, 0, 0.68),
+                        fontWeight: FontWeight.bold),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(20.0),
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 10),
+                TextFormField(
+                  controller: _phoneNumberController,
+                  decoration: InputDecoration(
+                    fillColor:
+                    const Color(0xFFD9D9D9), // Set the background color
+                    filled: true,
+                    labelText: 'Phone number controller',
+                    labelStyle: const TextStyle(
+                        color: Color.fromRGBO(0, 0, 0, 0.68),
+                        fontWeight: FontWeight.bold),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(20.0),
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 10),
+                TextFormField(
+                  controller: _emailController,
+                  decoration: InputDecoration(
+                    fillColor:
+                    const Color(0xFFD9D9D9), // Set the background color
+                    filled: true,
+                    labelText: 'Email',
+                    labelStyle: const TextStyle(
+                        color: Color.fromRGBO(0, 0, 0, 0.68),
+                        fontWeight: FontWeight.bold),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(20.0),
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 10),
+                TextFormField(
+                  controller: _gstNumberController,
+                  decoration: InputDecoration(
+                    fillColor:
+                    const Color(0xFFD9D9D9), // Set the background color
+                    filled: true,
+                    labelText: 'GST Number',
+                    labelStyle: const TextStyle(
+                        color: Color.fromRGBO(0, 0, 0, 0.68),
+                        fontWeight: FontWeight.bold),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(20.0),
+                    ),
+                  ),
                 ),
                 const SizedBox(height: 70),
                 ElevatedButton(
@@ -183,43 +245,73 @@ class RegistrationPageState extends State<RegistrationPage> {
                       final password = _passwordController.text;
                       final securityQuestion = _securityQuestionController.text;
                       final securityAnswer = _securityAnswerController.text;
+                      final proprietorName = _proprietorNameController.text;
+                      final firmName = _firmNameController.text;
+                      final address = _addressController.text;
+                      final phoneNumber = _phoneNumberController.text;
+                      final email = _emailController.text;
+                      final gstNumber = _gstNumberController.text;
 
-                      // Call a function from shared preferences helper class to save the data
-                      await SharedPreferencesHelper.saveUserData(
-                        name,
-                        password,
-                        securityQuestion,
-                        securityAnswer,
-                      );
+                      // Check if the required fields are empty
+                      if (name.isEmpty ||
+                          password.isEmpty ||
+                          securityQuestion.isEmpty ||
+                          securityAnswer.isEmpty ||
+                          proprietorName.isEmpty ||
+                          address.isEmpty ||
+                          phoneNumber.isEmpty ||
+                          email.isEmpty||
+                          firmName.isEmpty) {
+                        // Show an error message for the required fields
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                            content: Text('All fields except GST Number are required.'),
+                          ),
+                        );
+                      } else {
+                        // Call a function from shared preferences helper class to save the data
+                        await SharedPreferencesHelper.saveUserData(
+                          name,
+                          password,
+                          securityQuestion,
+                          securityAnswer,
+                          firmName,
+                          proprietorName,
+                          address,
+                          phoneNumber,
+                          email,
+                          gstNumber,
+                        );
 
-                      // Show a dialog or navigate to the next screen
-                      showDialog(
-                        context: context,
-                        builder: (BuildContext context) {
-                          return AlertDialog(
-                            title: const Text('Registration Successful'),
-                            content: const Text('You can now log in.'),
-                            actions: [
-                              TextButton(
-                                onPressed: () {
-                                  // Close the current dialog box
-                                  Navigator.of(context).pop();
-                                  //Navigate to login page after entering all details
-                                  Navigator.pushReplacement(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => LoginPage(
-                                        pref: widget.pref,
+                        // Show a dialog or navigate to the next screen
+                        showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return AlertDialog(
+                              title: const Text('Registration Successful'),
+                              content: const Text('You can now log in.'),
+                              actions: [
+                                TextButton(
+                                  onPressed: () {
+                                    // Close the current dialog box
+                                    Navigator.of(context).pop();
+                                    //Navigate to login page after entering all details
+                                    Navigator.pushReplacement(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => LoginPage(
+                                          pref: widget.pref,
+                                        ),
                                       ),
-                                    ),
-                                  );
-                                },
-                                child: const Text('OK'),
-                              ),
-                            ],
-                          );
-                        },
-                      );
+                                    );
+                                  },
+                                  child: const Text('OK'),
+                                ),
+                              ],
+                            );
+                          },
+                        );
+                      }
                     }
                   },
                   style: ElevatedButton.styleFrom(
@@ -379,7 +471,7 @@ class LoginPageState extends State<LoginPage> {
                                     Navigator.pushAndRemoveUntil(
                                       context,
                                       MaterialPageRoute(
-                                        builder: (context) => const HomePage(),
+                                        builder: (context) => HomePage(pref:widget.pref),
                                       ),
                                       (Route<dynamic> route) => false,
                                     );
@@ -477,7 +569,7 @@ class LoginPageState extends State<LoginPage> {
                                               Navigator.pushAndRemoveUntil(
                                                 context,
                                                 MaterialPageRoute(
-                                                  builder: (context) => const HomePage(),
+                                                  builder: (context) => HomePage(pref: widget.pref)
                                                 ),
                                                     (Route<dynamic> route) => false,
                                               );

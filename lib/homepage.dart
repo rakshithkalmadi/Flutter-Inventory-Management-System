@@ -1,11 +1,34 @@
 import 'package:flutter/material.dart';
-import 'sharedprefshelper.dart';
+import 'package:flutter_ims/infoupdate.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'invoice.dart';
 import 'purchaseorder.dart';
 import 'stocks.dart';
 import 'warehouse.dart';
 
-class HomePage extends StatelessWidget {
-  const HomePage({super.key});
+class HomePage extends StatefulWidget {
+  final SharedPreferences pref;
+  const HomePage({super.key,required this.pref});
+
+  @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  String propName="";
+
+  void getPropName(){
+    setState(() {
+      propName=widget.pref.getString('proprietorName')??'';
+    });
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    getPropName();
+  }
   // Homepage that will display the options of the functionalities offered by the application
   @override
   Widget build(BuildContext context) {
@@ -19,65 +42,26 @@ class HomePage extends StatelessWidget {
         child: ListView(
           padding: EdgeInsets.zero,
           children: [
-            const DrawerHeader(
-              decoration: BoxDecoration(
+             DrawerHeader(
+              decoration: const BoxDecoration(
                 color: Colors.lightBlueAccent,
               ),
               child: Text(
-                'HELLO',
-                style: TextStyle(color: Colors.white),
+                'HELLO $propName',
+                style: const TextStyle(color: Colors.white , fontSize: 24),
               ),
             ),
             ListTile(
-              title: const Text('Reset Password'),
-              leading: const Icon(Icons.key),
-              onTap: () {
-                showDialog(
-                  context: context,
-                  builder: (BuildContext context) {
-                    TextEditingController newPasswordController =
-                        TextEditingController();
-                    return AlertDialog(
-                      title: const Text('Reset Password'),
-                      content: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          TextFormField(
-                            controller: newPasswordController,
-                            decoration: const InputDecoration(
-                                labelText: 'New Password'),
-                          ),
-                        ],
-                      ),
-                      actions: [
-                        TextButton(
-                          onPressed: () {
-                            Navigator.of(context).pop();
-                          },
-                          child: const Text('Cancel'),
-                        ),
-                        ElevatedButton(
-                          onPressed: () async {
-                            // Close the current dialog box
-                            Navigator.of(context).pop();
-                            String newPassword = newPasswordController.text;
-                            await SharedPreferencesHelper.updatePassword(
-                                newPassword);
-                            // ignore: use_build_context_synchronously
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(
-                                content: Text('Password changed'),
-                              ),
-                            );
-                          },
-                          child: const Text('Reset'),
-                        ),
-                      ],
-                    );
-                  },
-                ); // Close the drawer
+              title: const Text("Update Info"),
+              leading: const Icon(Icons.info_outline),
+              onTap: (){
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                  builder: (_) =>ProfilePage(pref:widget.pref,refresh: getPropName)
+                  )
+                );
               },
-            ),
+            )
           ],
         ),
       ),
@@ -114,7 +98,11 @@ class HomePage extends StatelessWidget {
               title: 'Sales Order',
               imageAsset: 'assets/selling.jpg',
               onTap: () {
-                // Add your action for the Purchase Order card here
+                // Navigate to the warehouse invoice page
+                Navigator.of(context).push(
+                    MaterialPageRoute(
+                        builder: (_) => InvoicePage(prefs: widget.pref,))
+                );
               },
               height: 107,
               width: 118,
