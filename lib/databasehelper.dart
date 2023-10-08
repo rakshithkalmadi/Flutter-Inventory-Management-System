@@ -80,5 +80,22 @@ class DatabaseHelper {
     );
   }
 
+  // Function to obtain the selling price
+  Future<double> getSellingPriceById(int id) async {
+    final db = await database;
+    final result = await db.query(
+      'tyre_inventory',
+      columns: ['selling_price'],
+      where: 'id = ?',
+      whereArgs: [id],
+    );
+
+    if (result.isNotEmpty) {
+      return result.first['selling_price'] as double;
+    } else {
+      // Return a default value or handle the case when the ID is not found
+      return 0; // You can change this to your preferred default value
+    }
+  }
 
 }
