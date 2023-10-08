@@ -6,11 +6,12 @@ class SharedPreferencesHelper {
   static const String _securityQuestionKey = 'securityQuestion';
   static const String _securityAnswerKey = 'securityAnswer';
   static const String _proprietorNameKey = 'proprietorName';
-  static const String _firmNameKey = 'proprietorName';
+  static const String _firmNameKey = 'firmName';
   static const String _addressKey = 'address';
   static const String _phoneNumberKey = 'phoneNumber';
   static const String _emailKey = 'email';
   static const String _gstNumberKey = 'gstNumber';
+  static const String _recieptNumKey = 'username';
 
 
   // Save user registration data to shared preferences
@@ -25,6 +26,7 @@ class SharedPreferencesHelper {
       String phoneNumber,
       String email,
       String gstNumber,
+      String recieptNum,
       ) async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
 
@@ -38,6 +40,7 @@ class SharedPreferencesHelper {
     prefs.setString(_phoneNumberKey, phoneNumber);
     prefs.setString(_emailKey, email);
     prefs.setString(_gstNumberKey, gstNumber);
+    prefs.setString(_recieptNumKey, recieptNum);
   }
 
   // Retrieve the stored username
@@ -99,5 +102,9 @@ class SharedPreferencesHelper {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     return prefs.getString(_gstNumberKey);
   }
-
+  //Function to retrieve receipt Number
+  static Future<String?> getReceiptNumber() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    return prefs.getString(_recieptNumKey);
+  }
 }

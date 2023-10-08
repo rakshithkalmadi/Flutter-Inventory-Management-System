@@ -30,7 +30,7 @@ class ProfilePageState extends State<ProfilePage> {
   void initState() {
     super.initState();
     // Retrieve user data from SharedPreferences and pre-fill text fields
-    _nameController.text = widget.pref.getString('name') ?? '';
+    _nameController.text = widget.pref.getString('username') ?? '';
     _passwordController.text = widget.pref.getString('password') ?? '';
     _securityQuestionController.text =
         widget.pref.getString('securityQuestion') ?? '';
@@ -110,210 +110,207 @@ class ProfilePageState extends State<ProfilePage> {
               fit: BoxFit.cover,
             ),
           ),
-          child: Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Form(
-              key: _formKey,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  const Text(
-                    "REGISTER",
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white,
-                      fontSize: 28,
-                    ),
-                  ),
-                  const SizedBox(
-                    height: 30,
-                  ),
-                  TextFormField(
-                    controller: _nameController,
-                    decoration: InputDecoration(
-                      fillColor:
-                          const Color(0xFFD9D9D9), // Set the background color
-                      filled: true,
-                      labelText: 'Username',
-                      labelStyle: const TextStyle(
-                          color: Color.fromRGBO(0, 0, 0, 0.68),
-                          fontWeight: FontWeight.bold),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(20.0),
+          child: SafeArea(
+            child: Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Form(
+                key: _formKey,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    TextFormField(
+                      controller: _nameController,
+                      decoration: InputDecoration(
+                        fillColor:
+                            const Color(0xFFD9D9D9), // Set the background color
+                        filled: true,
+                        labelText: 'Username',
+                        labelStyle: const TextStyle(
+                            color: Color.fromRGBO(0, 0, 0, 0.68),
+                            fontWeight: FontWeight.bold),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(20.0),
+                        ),
                       ),
                     ),
-                  ),
-                  const SizedBox(height: 10),
-                  TextFormField(
-                    controller: _passwordController,
-                    decoration: InputDecoration(
-                      fillColor:
-                          const Color(0xFFD9D9D9), // Set the background color
-                      filled: true,
-                      labelText: 'Password',
-                      labelStyle: const TextStyle(
-                          color: Color.fromRGBO(0, 0, 0, 0.68),
-                          fontWeight: FontWeight.bold),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(20.0),
+                    const SizedBox(height: 10),
+                    TextFormField(
+                      controller: _passwordController,
+                      decoration: InputDecoration(
+                        fillColor:
+                            const Color(0xFFD9D9D9), // Set the background color
+                        filled: true,
+                        labelText: 'Password',
+                        labelStyle: const TextStyle(
+                            color: Color.fromRGBO(0, 0, 0, 0.68),
+                            fontWeight: FontWeight.bold),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(20.0),
+                        ),
                       ),
                     ),
-                  ),
-                  const SizedBox(height: 10),
-                  TextFormField(
-                    controller: _securityQuestionController,
-                    decoration: InputDecoration(
-                      fillColor:
-                          const Color(0xFFD9D9D9), // Set the background color
-                      filled: true,
-                      labelText: 'Security Question',
-                      labelStyle: const TextStyle(
-                          color: Color.fromRGBO(0, 0, 0, 0.68),
-                          fontWeight: FontWeight.bold),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(20.0),
+                    const SizedBox(height: 10),
+                    TextFormField(
+                      controller: _securityQuestionController,
+                      decoration: InputDecoration(
+                        fillColor:
+                            const Color(0xFFD9D9D9), // Set the background color
+                        filled: true,
+                        labelText: 'Security Question',
+                        labelStyle: const TextStyle(
+                            color: Color.fromRGBO(0, 0, 0, 0.68),
+                            fontWeight: FontWeight.bold),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(20.0),
+                        ),
                       ),
                     ),
-                  ),
-                  const SizedBox(height: 10),
-                  TextFormField(
-                    controller: _securityAnswerController,
-                    decoration: InputDecoration(
-                      fillColor:
-                          const Color(0xFFD9D9D9), // Set the background color
-                      filled: true,
-                      labelText: 'Security Answer',
-                      labelStyle: const TextStyle(
-                          color: Color.fromRGBO(0, 0, 0, 0.68),
-                          fontWeight: FontWeight.bold),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(20.0),
+                    const SizedBox(height: 10),
+                    TextFormField(
+                      controller: _securityAnswerController,
+                      decoration: InputDecoration(
+                        fillColor:
+                            const Color(0xFFD9D9D9), // Set the background color
+                        filled: true,
+                        labelText: 'Security Answer',
+                        labelStyle: const TextStyle(
+                            color: Color.fromRGBO(0, 0, 0, 0.68),
+                            fontWeight: FontWeight.bold),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(20.0),
+                        ),
                       ),
                     ),
-                  ),
-                  const SizedBox(height: 10),
-                  TextFormField(
-                    controller: _firmNameController,
-                    decoration: InputDecoration(
-                      fillColor:
-                          const Color(0xFFD9D9D9), // Set the background color
-                      filled: true,
-                      labelText: 'Firm Name',
-                      labelStyle: const TextStyle(
-                          color: Color.fromRGBO(0, 0, 0, 0.68),
-                          fontWeight: FontWeight.bold),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(20.0),
+                    const SizedBox(height: 10),
+                    TextFormField(
+                      controller: _firmNameController,
+                      decoration: InputDecoration(
+                        fillColor:
+                            const Color(0xFFD9D9D9), // Set the background color
+                        filled: true,
+                        labelText: 'Firm Name',
+                        labelStyle: const TextStyle(
+                            color: Color.fromRGBO(0, 0, 0, 0.68),
+                            fontWeight: FontWeight.bold),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(20.0),
+                        ),
                       ),
                     ),
-                  ),
-                  const SizedBox(height: 10),
-                  TextFormField(
-                    controller: _proprietorNameController,
-                    decoration: InputDecoration(
-                      fillColor:
-                          const Color(0xFFD9D9D9), // Set the background color
-                      filled: true,
-                      labelText: 'Proprietor Name',
-                      labelStyle: const TextStyle(
-                          color: Color.fromRGBO(0, 0, 0, 0.68),
-                          fontWeight: FontWeight.bold),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(20.0),
+                    const SizedBox(height: 10),
+                    TextFormField(
+                      controller: _proprietorNameController,
+                      decoration: InputDecoration(
+                        fillColor:
+                            const Color(0xFFD9D9D9), // Set the background color
+                        filled: true,
+                        labelText: 'Proprietor Name',
+                        labelStyle: const TextStyle(
+                            color: Color.fromRGBO(0, 0, 0, 0.68),
+                            fontWeight: FontWeight.bold),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(20.0),
+                        ),
                       ),
                     ),
-                  ),
-                  const SizedBox(height: 10),
-                  TextFormField(
-                    controller: _addressController,
-                    decoration: InputDecoration(
-                      fillColor:
-                          const Color(0xFFD9D9D9), // Set the background color
-                      filled: true,
-                      labelText: 'Address',
-                      labelStyle: const TextStyle(
-                          color: Color.fromRGBO(0, 0, 0, 0.68),
-                          fontWeight: FontWeight.bold),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(20.0),
+                    const SizedBox(height: 10),
+                    TextFormField(
+                      controller: _addressController,
+                      decoration: InputDecoration(
+                        fillColor:
+                            const Color(0xFFD9D9D9), // Set the background color
+                        filled: true,
+                        labelText: 'Address',
+                        labelStyle: const TextStyle(
+                            color: Color.fromRGBO(0, 0, 0, 0.68),
+                            fontWeight: FontWeight.bold),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(20.0),
+                        ),
                       ),
                     ),
-                  ),
-                  const SizedBox(height: 10),
-                  TextFormField(
-                    controller: _phoneNumberController,
-                    decoration: InputDecoration(
-                      fillColor:
-                          const Color(0xFFD9D9D9), // Set the background color
-                      filled: true,
-                      labelText: 'Phone number controller',
-                      labelStyle: const TextStyle(
-                          color: Color.fromRGBO(0, 0, 0, 0.68),
-                          fontWeight: FontWeight.bold),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(20.0),
+                    const SizedBox(height: 10),
+                    TextFormField(
+                      controller: _phoneNumberController,
+                      decoration: InputDecoration(
+                        fillColor:
+                            const Color(0xFFD9D9D9), // Set the background color
+                        filled: true,
+                        labelText: 'Phone number controller',
+                        labelStyle: const TextStyle(
+                            color: Color.fromRGBO(0, 0, 0, 0.68),
+                            fontWeight: FontWeight.bold),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(20.0),
+                        ),
                       ),
                     ),
-                  ),
-                  const SizedBox(height: 10),
-                  TextFormField(
-                    controller: _emailController,
-                    decoration: InputDecoration(
-                      fillColor:
-                          const Color(0xFFD9D9D9), // Set the background color
-                      filled: true,
-                      labelText: 'Email',
-                      labelStyle: const TextStyle(
-                          color: Color.fromRGBO(0, 0, 0, 0.68),
-                          fontWeight: FontWeight.bold),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(20.0),
+                    const SizedBox(height: 10),
+                    TextFormField(
+                      controller: _emailController,
+                      decoration: InputDecoration(
+                        fillColor:
+                            const Color(0xFFD9D9D9), // Set the background color
+                        filled: true,
+                        labelText: 'Email',
+                        labelStyle: const TextStyle(
+                            color: Color.fromRGBO(0, 0, 0, 0.68),
+                            fontWeight: FontWeight.bold),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(20.0),
+                        ),
                       ),
                     ),
-                  ),
-                  const SizedBox(height: 10),
-                  TextFormField(
-                    controller: _gstNumberController,
-                    decoration: InputDecoration(
-                      fillColor:
-                          const Color(0xFFD9D9D9), // Set the background color
-                      filled: true,
-                      labelText: 'GST Number',
-                      labelStyle: const TextStyle(
-                          color: Color.fromRGBO(0, 0, 0, 0.68),
-                          fontWeight: FontWeight.bold),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(20.0),
+                    const SizedBox(height: 10),
+                    TextFormField(
+                      controller: _gstNumberController,
+                      decoration: InputDecoration(
+                        fillColor:
+                            const Color(0xFFD9D9D9), // Set the background color
+                        filled: true,
+                        labelText: 'GST Number',
+                        labelStyle: const TextStyle(
+                            color: Color.fromRGBO(0, 0, 0, 0.68),
+                            fontWeight: FontWeight.bold),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(20.0),
+                        ),
                       ),
                     ),
-                  ),
-                  const SizedBox(height: 70),
-                  ElevatedButton(
-                    onPressed: () {
-                      if (_nameController.text.isEmpty ||
-                          _passwordController.text.isEmpty ||
-                          _securityQuestionController.text.isEmpty ||
-                          _securityAnswerController.text.isEmpty ||
-                          _proprietorNameController.text.isEmpty ||
-                          _addressController.text.isEmpty ||
-                          _phoneNumberController.text.isEmpty ||
-                          _emailController.text.isEmpty ||
-                          _firmNameController.text.isEmpty) {
-                        // Show an error message for the required fields
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(
-                            content: Text(
-                                'All fields except GST Number are required.'),
-                          ),
-                        );
-                      } else {
-                        // Show the confirmation dialog before updating the profile
-                        _showConfirmationDialog();
-                      }
-                    },
-                    child: const Text('Update Profile'),
-                  ),
-                ],
+                    const SizedBox(height: 30),
+                    ElevatedButton(
+                      onPressed: () {
+                        if (_nameController.text.isEmpty ||
+                            _passwordController.text.isEmpty ||
+                            _securityQuestionController.text.isEmpty ||
+                            _securityAnswerController.text.isEmpty ||
+                            _proprietorNameController.text.isEmpty ||
+                            _addressController.text.isEmpty ||
+                            _phoneNumberController.text.isEmpty ||
+                            _emailController.text.isEmpty ||
+                            _firmNameController.text.isEmpty) {
+                          // Show an error message for the required fields
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                              content: Text(
+                                  'All fields except GST Number are required.'),
+                            ),
+                          );
+                        } else {
+                          // Show the confirmation dialog before updating the profile
+                          _showConfirmationDialog();
+                        }
+                      },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: const Color(0xFF47BCAE),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(20.0),
+                        ),
+                      ),
+                      child: const Text('Update Profile'),
+                    ),
+                  ],
+                ),
               ),
             ),
           ),
