@@ -98,4 +98,21 @@ class DatabaseHelper {
     }
   }
 
+  Future<int> getQuantityById(int id) async {
+    final db = await database;
+    final result = await db.query(
+      'tyre_inventory',
+      columns: ['quantity'],
+      where: 'id = ?',
+      whereArgs: [id],
+    );
+
+    if (result.isNotEmpty) {
+      return result.first['quantity'] as int;
+    } else {
+      // Return a default value or handle the case when the ID is not found
+      return 0; // You can change this to your preferred default value
+    }
+  }
+
 }

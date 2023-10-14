@@ -192,6 +192,7 @@ class RegistrationPageState extends State<RegistrationPage> {
                   ),
                   const SizedBox(height: 10),
                   TextFormField(
+                    keyboardType: TextInputType.number,
                     controller: _phoneNumberController,
                     decoration: InputDecoration(
                       fillColor:
@@ -221,6 +222,14 @@ class RegistrationPageState extends State<RegistrationPage> {
                         borderRadius: BorderRadius.circular(20.0),
                       ),
                     ),
+                    validator: (value) {
+                      if (value==null || value=='') {
+                        return 'Please enter an email';
+                      } else if (!RegExp(r'^[\w-]+(\.[\w-]+)*@[\w-]+(\.[\w-]+)+$').hasMatch(value)) {
+                        return 'Please enter a valid email address';
+                      }
+                      return null; // Return null if the input is valid
+                    },
                   ),
                   const SizedBox(height: 10),
                   TextFormField(
@@ -252,7 +261,7 @@ class RegistrationPageState extends State<RegistrationPage> {
                         final phoneNumber = _phoneNumberController.text;
                         final email = _emailController.text;
                         final gstNumber = _gstNumberController.text;
-                        const receiptNum='0';
+                        const receiptNum='1';
 
                         // Check if the required fields are empty
                         if (name.isEmpty ||
@@ -297,6 +306,7 @@ class RegistrationPageState extends State<RegistrationPage> {
                                   TextButton(
                                     onPressed: () {
                                       // Close the current dialog box
+                                      print(widget.pref.getString("_usernameKey"));
                                       Navigator.of(context).pop();
                                       //Navigate to login page after entering all details
                                       Navigator.pushReplacement(

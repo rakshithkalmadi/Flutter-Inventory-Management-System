@@ -28,6 +28,9 @@ environment:
 # the latest version available on pub.dev. To see which dependencies have newer
 # versions available, run `flutter pub outdated`.
 dependencies:
+  permission_handler: ^11.0.1
+  pdf: ^3.10.4
+  path_provider: ^2.1.1
   flutter_typeahead: ^4.8.0
   sqflite: ^2.3.0
   shared_preferences: ^2.2.1
@@ -79,11 +82,11 @@ flutter:
   # "family" key with the font family name, and a "fonts" key with a
   # list giving the asset and other descriptors for the font. For
   # example:
-  # fonts:
-  #   - family: Schyler
-  #     fonts:
-  #       - asset: fonts/Schyler-Regular.ttf
-  #       - asset: fonts/Schyler-Italic.ttf
+  fonts:
+   - family: Roboto
+     fonts:
+       - asset: assets/Roboto-Regular.ttf
+       - asset: assets/Roboto-Bold.ttf
   #         style: italic
   #   - family: Trajan Pro
   #     fonts:
