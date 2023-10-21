@@ -11,7 +11,7 @@ class SharedPreferencesHelper {
   static const String _phoneNumberKey = 'phoneNumber';
   static const String _emailKey = 'email';
   static const String _gstNumberKey = 'gstNumber';
-  static const String _recieptNumKey = 'username';
+  static const String _recieptNumKey = 'receiptNum';
 
 
   // Save user registration data to shared preferences
