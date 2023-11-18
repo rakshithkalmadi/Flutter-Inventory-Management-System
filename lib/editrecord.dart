@@ -119,10 +119,9 @@ class EditRecordPageState extends State<EditRecordPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFF87F892),
       appBar: AppBar(
         title: const Text('Details'),
-        backgroundColor: const Color(0xFF48CC56),
+        backgroundColor: const Color(0xFF2DA1E5),
       ),
       body: SingleChildScrollView(
         child: Padding(
@@ -174,8 +173,7 @@ class EditRecordPageState extends State<EditRecordPage> {
               const SizedBox(height: 16.0),
               ElevatedButton(
                 style: ElevatedButton.styleFrom(
-                  backgroundColor:
-                      const Color(0xFF08A10F), // Change the button color
+                  backgroundColor: const Color(0xFF2DA1E5),
                   shape: RoundedRectangleBorder(
                     borderRadius:
                         BorderRadius.circular(20.0), // Add border radius here
@@ -201,15 +199,18 @@ class EditRecordPageState extends State<EditRecordPage> {
   }) {
     return Container(
       decoration: BoxDecoration(
-        color: const Color(0xFF55C47B),
+        color: const Color(0xFF52ADE3),
         borderRadius: BorderRadius.circular(15.0),
       ),
       child: TextFormField(
+        style: const TextStyle(
+          color: Colors.white
+        ),
         controller: controller,
         keyboardType: keyboardType,
         decoration: InputDecoration(
-          labelText: labelText,
-          labelStyle: const TextStyle(
+          hintText: labelText,
+          hintStyle: const TextStyle(
             color: Colors.white,
           ),
           border: const OutlineInputBorder(

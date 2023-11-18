@@ -84,9 +84,8 @@ class WarehousePageState extends State<WarehousePage> {
     final groupedWidgets = buildGroupedWidgets(groupedRecords);
 
     return Scaffold(
-        backgroundColor: const Color(0xFF87F892),
         appBar: AppBar(
-          backgroundColor: const Color(0xFF48CC56),
+          backgroundColor: const Color(0xFF2DA1E5),
           title: isSearch
               ? TextField(
                   // Search bar in the appbar
@@ -187,7 +186,7 @@ class WarehousePageState extends State<WarehousePage> {
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(15.0),
                   ),
-                  color: const Color(0xFF55C47B),
+                  color: const Color(0xFF52ADE3),
                   child: ListTile(
                     title: Text(
                       '${record.brand} - ${record.design} - ${record.size}',

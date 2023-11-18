@@ -9,6 +9,7 @@ import 'package:path_provider/path_provider.dart';
 import 'dart:io';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:flutter/services.dart';
+import 'package:open_file/open_file.dart';
 
 class InvoicePage extends StatefulWidget {
   final SharedPreferences prefs;
@@ -18,12 +19,14 @@ class InvoicePage extends StatefulWidget {
 }
 
 class _InvoicePageState extends State<InvoicePage> {
-  bool istotal=false;
+  bool istotal = false;
   String firmName = '', address = '', email = '', phoneNumber = '';
-  int recptNum=0;
+  int recptNum = 0;
   List<int> idList = List<int>.filled(10, -1);
   double totalAmt = 0;
   List<FocusNode> qtyFocusNodes = List.generate(10, (index) => FocusNode());
+  List<List<Map<String, dynamic>>> selectedItemsList =
+      List.generate(10, (index) => []);
 
   List<TextEditingController> itemControllers =
       List.generate(10, (index) => TextEditingController());
@@ -52,6 +55,19 @@ class _InvoicePageState extends State<InvoicePage> {
     double rate = double.tryParse(rateControllers[index].text) ?? 0.0;
     double amount = qty * rate;
     amtControllers[index].text = amount.toString();
+    calculateTotalAmount();
+  }
+
+  void calculateTotalAmount() {
+    double total = 0;
+    for (int i = 0; i < amtControllers.length; i++) {
+      if (idList[i] != -1) {
+        total += double.tryParse(amtControllers[i].text) ?? 0;
+      }
+    }
+    setState(() {
+      totalAmt = total;
+    });
   }
 
   //Function to get the selling price of the product based on item name
@@ -65,27 +81,28 @@ class _InvoicePageState extends State<InvoicePage> {
 
   //Function to fetch the filtered items from database
   Future<List<Map<String, dynamic>>> fetchItemsFromDatabase(
-      String pattern) async {
+      String pattern, int fieldIndex) async {
     final databaseHelper = DatabaseHelper();
-    final databaseRecords =
-        await databaseHelper.getAllRecords(); // Call your database query method
-    // Extract item names in the format "brand-design-size" along with their IDs from the database records
+    final databaseRecords = await databaseHelper.getAllRecords();
+
     final itemsWithIds = databaseRecords.map((record) {
       final brand = record['brand'] as String;
       final design = record['design'] as String;
       final size = record['size'] as String;
-      final id = record['id']
-          as int; // Assuming the ID field in your database is of type int
+      final id = record['id'] as int;
       final itemName = '$brand-$design-$size';
       return {'id': id, 'itemName': itemName};
     }).toList();
 
-    // Filter items that match the input pattern
+    // Filter items that match the input pattern and are not in any selectedItemsList
     final filteredItems = itemsWithIds.where((item) {
       final itemName = item['itemName'] as String;
-      return itemName.toLowerCase().contains(pattern.toLowerCase());
-    }).toList();
+      final itemId = item['id'] as int;
 
+      return itemName.toLowerCase().contains(pattern.toLowerCase()) &&
+          !selectedItemsList.any((list) =>
+              list.any((selectedItem) => selectedItem['id'] == itemId));
+    }).toList();
     return filteredItems;
   }
 
@@ -93,7 +110,7 @@ class _InvoicePageState extends State<InvoicePage> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    istotal=true;
+    istotal = true;
     firmName = widget.prefs.getString('firmName') ?? '';
     address = widget.prefs.getString('address') ?? '';
     email = widget.prefs.getString('email') ?? '';
@@ -124,29 +141,53 @@ class _InvoicePageState extends State<InvoicePage> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Invoice'),
-        backgroundColor: const Color(0xFF48CC56),
+        backgroundColor: const Color(0xFF2DA1E5),
         actions: [
           TextButton(
               onPressed: () async {
-                await generateInvoice();
-                // Update the receipt number in SharedPreferences
-                await widget.prefs.setString('receiptNum', (recptNum + 1).toString());
-                int sold=0;
-                for(int i=0;i<10;i++){
-                  if(idList[i]!=-1){
-                    int currentQty=await DatabaseHelper().getQuantityById(idList[i]);
-                    try {
-                       sold = int.parse(qtyControllers[i].text);
-                    } catch (e) {
-                      // ignore: avoid_print
-                      print("Error: $e");
+                // Check if customer details are not empty and total amount is not zero
+                if (custName.text.isNotEmpty && totalAmt > 0) {
+                  final generatedPdf = await generateInvoice();
+                  // Update the receipt number in SharedPreferences
+                  await widget.prefs
+                      .setString('receiptNum', (recptNum + 1).toString());
+                  int sold = 0;
+                  for (int i = 0; i < 10; i++) {
+                    if (idList[i] != -1) {
+                      int currentQty =
+                          await DatabaseHelper().getQuantityById(idList[i]);
+                      try {
+                        sold = int.parse(qtyControllers[i].text);
+                      } catch (e) {
+                        // ignore: avoid_print
+                        print("Error: $e");
+                      }
+                      int newQty = currentQty - sold;
+                      DatabaseHelper().updateQuantity(idList[i], newQty);
                     }
-                    int newQty=currentQty-sold;
-                    DatabaseHelper().updateQuantity(idList[i], newQty);
                   }
+                  await openFile(generatedPdf!);
+                  // ignore: use_build_context_synchronously
+                  Navigator.of(context).pop();
+                } else {
+                  // Show a message or alert indicating that customer details are required
+                  // and total amount must be greater than 0.
+                  // For example:
+                  showDialog(
+                    context: context,
+                    builder: (context) => AlertDialog(
+                      title: const Text('Invalid Data'),
+                      content: const Text(
+                          'Please provide customer details and ensure the total amount is greater than 0.'),
+                      actions: [
+                        TextButton(
+                          onPressed: () => Navigator.of(context).pop(),
+                          child: const Text('OK'),
+                        ),
+                      ],
+                    ),
+                  );
                 }
-                // ignore: use_build_context_synchronously
-                Navigator.of(context).pop();
               },
               child: const Text(
                 "Generate Invoice",
@@ -161,7 +202,7 @@ class _InvoicePageState extends State<InvoicePage> {
             children: [
               // Invoice Container
               Container(
-                height: screenHeight+100,
+                height: screenHeight + 100,
                 decoration: BoxDecoration(
                   border: Border.all(
                     color: Colors.black,
@@ -181,52 +222,55 @@ class _InvoicePageState extends State<InvoicePage> {
                             width: 2.0,
                           ),
                         ),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Align(
-                              alignment: Alignment.centerRight,
-                              child: Text(
-                                'Reciept No. : ${widget.prefs.getString('receiptNum') ?? ''}',
+                        child: Padding(
+                          padding: const EdgeInsets.all(10.0),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Align(
+                                alignment: Alignment.centerRight,
+                                child: Text(
+                                  'Reciept No. : ${widget.prefs.getString('receiptNum') ?? ''}',
+                                  textAlign: TextAlign.center,
+                                  style: const TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ),
+                              Text(
+                                firmName,
+                                textAlign: TextAlign.left,
+                                style: const TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              const SizedBox(
+                                  height: 5.0), // Adjust spacing as needed
+                              Text(
+                                address,
                                 textAlign: TextAlign.center,
                                 style: const TextStyle(
                                   fontWeight: FontWeight.bold,
                                 ),
                               ),
-                            ),
-                            Text(
-                              firmName,
-                              textAlign: TextAlign.center,
-                              style: const TextStyle(
-                                fontWeight: FontWeight.bold,
+                              const SizedBox(height: 5.0),
+                              Text(
+                                email,
+                                textAlign: TextAlign.center,
+                                style: const TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                ),
                               ),
-                            ),
-                            const SizedBox(
-                                height: 5.0), // Adjust spacing as needed
-                            Text(
-                              address,
-                              textAlign: TextAlign.center,
-                              style: const TextStyle(
-                                fontWeight: FontWeight.bold,
+                              const SizedBox(height: 5.0),
+                              Text(
+                                phoneNumber,
+                                textAlign: TextAlign.center,
+                                style: const TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                ),
                               ),
-                            ),
-                            const SizedBox(height: 5.0),
-                            Text(
-                              email,
-                              textAlign: TextAlign.center,
-                              style: const TextStyle(
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                            const SizedBox(height: 5.0),
-                            Text(
-                              phoneNumber,
-                              textAlign: TextAlign.center,
-                              style: const TextStyle(
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ],
+                            ],
+                          ),
                         ),
                       ),
                     ),
@@ -353,7 +397,7 @@ class _InvoicePageState extends State<InvoicePage> {
                                       suggestionsCallback: (pattern) async {
                                         // Fetch item suggestions based on the input pattern
                                         return await fetchItemsFromDatabase(
-                                            pattern);
+                                            pattern, i);
                                       },
                                       itemBuilder: (context, suggestion) {
                                         final item = suggestion;
@@ -364,15 +408,15 @@ class _InvoicePageState extends State<InvoicePage> {
                                       },
                                       onSuggestionSelected: (suggestion) {
                                         final item = suggestion;
-                                        final id = item['id']
-                                            as int; // Extract the ID from the suggestion
+                                        final id = item['id'] as int;
                                         setState(() {
                                           idList[i] = id;
-                                          itemControllers[i].text = item[
-                                                  'itemName']
-                                              as String; // Set the text field to the item string
+                                          itemControllers[i].text =
+                                              item['itemName'] as String;
                                           fetchSellingPrice(
                                               id, rateControllers[i]);
+                                          selectedItemsList[i].add(
+                                              item); // Add the selected item to the list
                                         });
                                       },
                                     ),
@@ -395,6 +439,10 @@ class _InvoicePageState extends State<InvoicePage> {
                                           focusNode: qtyFocusNodes[i],
                                           keyboardType: TextInputType
                                               .number, // Specify the keyboard type for numbers
+                                          onChanged: (value) {
+                                            // Call the updateAmounts method when quantity changes
+                                            updateAmount(i);
+                                          },
                                           decoration: const InputDecoration(
                                             border: InputBorder
                                                 .none, // Remove the default input border
@@ -460,29 +508,16 @@ class _InvoicePageState extends State<InvoicePage> {
                         ),
                       ),
                     ),
-                    GestureDetector(
-                      onTap: istotal? (){
-                        setState(() {
-                          for (int i = 0; i < amtControllers.length; i++) {
-                            if(idList[i]!=0) {
-                              totalAmt +=
-                                  double.tryParse(amtControllers[i].text) ?? 0;
-                            }
-                          }
-                        });
-
-                      }:null,
-                      child: Align(
-                        alignment: Alignment.centerRight,
-                        child: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Text(
-                            'Total Amount = $totalAmt',
-                            style: const TextStyle(
-                              fontSize: 18,
-                              decoration: TextDecoration.underline,
-                              fontWeight: FontWeight.bold,
-                            ),
+                    Align(
+                      alignment: Alignment.centerRight,
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text(
+                          'Total Amount = $totalAmt',
+                          style: const TextStyle(
+                            fontSize: 18,
+                            decoration: TextDecoration.underline,
+                            fontWeight: FontWeight.bold,
                           ),
                         ),
                       ),
@@ -542,7 +577,7 @@ class _InvoicePageState extends State<InvoicePage> {
                     ),
                   ),
                   child: pw.Column(
-                    crossAxisAlignment: pw.CrossAxisAlignment.center,
+                    crossAxisAlignment: pw.CrossAxisAlignment.start,
                     children: [
                       pw.Align(
                         alignment: pw.Alignment.centerRight,
@@ -594,16 +629,17 @@ class _InvoicePageState extends State<InvoicePage> {
                   ),
                 ),
               ),
-              pw.Padding(
-                padding: const pw.EdgeInsets.all(8.0),
-                child: pw.Container(
-                  decoration: pw.BoxDecoration(
-                    borderRadius: pw.BorderRadius.circular(10.0),
-                    border: pw.Border.all(
-                      color: PdfColors.black,
-                      width: 2.0,
-                    ),
+              pw.SizedBox(height: 20),
+              pw.Container(
+                decoration: pw.BoxDecoration(
+                  borderRadius: pw.BorderRadius.circular(10.0),
+                  border: pw.Border.all(
+                    color: PdfColors.black,
+                    width: 2.0,
                   ),
+                ),
+                child: pw.Padding(
+                  padding: const pw.EdgeInsets.all(8.0),
                   child: pw.Text(
                     'Customer Details : ${custName.text} ',
                     textAlign: pw.TextAlign.center,
@@ -613,9 +649,9 @@ class _InvoicePageState extends State<InvoicePage> {
                         fontSize: 20),
                   ),
                 ),
-              ),
+              )
             ]),
-            pw.SizedBox(height: 10),
+            pw.SizedBox(height: 30),
             pw.Table(
               defaultColumnWidth: const pw.IntrinsicColumnWidth(flex: 1.0),
               defaultVerticalAlignment: pw.TableCellVerticalAlignment.middle,
@@ -669,8 +705,10 @@ class _InvoicePageState extends State<InvoicePage> {
               child: pw.Text(
                 'Total Amount = $totalAmt',
                 textAlign: pw.TextAlign.center,
-                style:
-                    pw.TextStyle(fontWeight: pw.FontWeight.bold, font: ttfBold,fontSize: 15),
+                style: pw.TextStyle(
+                    fontWeight: pw.FontWeight.bold,
+                    font: ttfBold,
+                    fontSize: 15),
               ),
             ),
           ]);
@@ -679,8 +717,7 @@ class _InvoicePageState extends State<InvoicePage> {
     );
 
     // Stores data in  Android/data/user/0/com.example.flutter_ims/app_flutter path
-    final Directory? downloadsDirectory =
-        (await getExternalStorageDirectory());
+    final Directory? downloadsDirectory = (await getExternalStorageDirectory());
     if (!(await downloadsDirectory!.exists())) {
       await downloadsDirectory.create(recursive: true);
     }
@@ -691,27 +728,37 @@ class _InvoicePageState extends State<InvoicePage> {
   }
 
   // Function to create the items in table
-  pw.TableRow _buildTableRow(String item, String quantity, String rate,
-      String amount, pw.Font ttf) {
+  pw.TableRow _buildTableRow(
+      String item, String quantity, String rate, String amount, pw.Font ttf) {
     return pw.TableRow(
       children: [
         pw.Container(
           alignment: pw.Alignment.center,
-          child: pw.Text(item, style: pw.TextStyle(font: ttf,fontSize: 15,)),
+          child: pw.Text(item,
+              style: pw.TextStyle(
+                font: ttf,
+                fontSize: 15,
+              )),
         ),
         pw.Container(
           alignment: pw.Alignment.center,
-          child: pw.Text(quantity, style: pw.TextStyle(font: ttf,fontSize: 15)),
+          child:
+              pw.Text(quantity, style: pw.TextStyle(font: ttf, fontSize: 15)),
         ),
         pw.Container(
           alignment: pw.Alignment.center,
-          child: pw.Text(rate, style: pw.TextStyle(font: ttf,fontSize: 15)),
+          child: pw.Text(rate, style: pw.TextStyle(font: ttf, fontSize: 15)),
         ),
         pw.Container(
           alignment: pw.Alignment.center,
-          child: pw.Text(amount, style: pw.TextStyle(font: ttf,fontSize: 15)),
+          child: pw.Text(amount, style: pw.TextStyle(font: ttf, fontSize: 15)),
         ),
       ],
     );
+  }
+
+  Future openFile(File file) async {
+    final url = file.path;
+    await OpenFile.open(url);
   }
 }

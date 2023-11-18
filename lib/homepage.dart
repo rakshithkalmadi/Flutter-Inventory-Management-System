@@ -33,10 +33,9 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFF87F892),
       appBar: AppBar(
         title: const Text('HOME'),
-        backgroundColor: const Color(0xFF48CC56),
+        backgroundColor: const Color(0xFF2DA1E5),
       ),
       drawer: Drawer(
         child: ListView(
@@ -141,7 +140,7 @@ class _HomePageState extends State<HomePage> {
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(15.0),
         ),
-        color: const Color(0xFF55C47B),
+        color: const Color(0xFF52ADE3),
         child: InkWell(
           onTap: onTap,
           child: Column(
@@ -150,17 +149,21 @@ class _HomePageState extends State<HomePage> {
                 title: Text(
                   title,
                   style: const TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 20),
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 20,
+                  ),
                 ),
               ),
               Padding(
                 padding: const EdgeInsets.all(8.0),
-                child: Image.asset(
-                  imageAsset,
-                  height: height,
-                  width: width,
+                child: Hero(
+                  tag: imageAsset,
+                  child: Image.asset(
+                    imageAsset,
+                    height: height,
+                    width: width,
+                  ),
                 ),
               ),
             ],

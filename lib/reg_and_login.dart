@@ -84,8 +84,8 @@ class RegistrationPageState extends State<RegistrationPage> {
                       fillColor:
                           const Color(0xFFD9D9D9), // Set the background color
                       filled: true,
-                      labelText: 'Username',
-                      labelStyle: const TextStyle(
+                      hintText: 'Username',
+                      hintStyle: const TextStyle(
                           color: Color.fromRGBO(0, 0, 0, 0.68),
                           fontWeight: FontWeight.bold),
                       border: OutlineInputBorder(
@@ -100,8 +100,8 @@ class RegistrationPageState extends State<RegistrationPage> {
                       fillColor:
                           const Color(0xFFD9D9D9), // Set the background color
                       filled: true,
-                      labelText: 'Password',
-                      labelStyle: const TextStyle(
+                      hintText: 'Password',
+                      hintStyle: const TextStyle(
                           color: Color.fromRGBO(0, 0, 0, 0.68),
                           fontWeight: FontWeight.bold),
                       border: OutlineInputBorder(
@@ -116,8 +116,8 @@ class RegistrationPageState extends State<RegistrationPage> {
                       fillColor:
                           const Color(0xFFD9D9D9), // Set the background color
                       filled: true,
-                      labelText: 'Security Question',
-                      labelStyle: const TextStyle(
+                      hintText: 'Security Question',
+                      hintStyle: const TextStyle(
                           color: Color.fromRGBO(0, 0, 0, 0.68),
                           fontWeight: FontWeight.bold),
                       border: OutlineInputBorder(
@@ -132,8 +132,8 @@ class RegistrationPageState extends State<RegistrationPage> {
                       fillColor:
                           const Color(0xFFD9D9D9), // Set the background color
                       filled: true,
-                      labelText: 'Security Answer',
-                      labelStyle: const TextStyle(
+                      hintText: 'Security Answer',
+                      hintStyle: const TextStyle(
                           color: Color.fromRGBO(0, 0, 0, 0.68),
                           fontWeight: FontWeight.bold),
                       border: OutlineInputBorder(
@@ -148,8 +148,8 @@ class RegistrationPageState extends State<RegistrationPage> {
                       fillColor:
                       const Color(0xFFD9D9D9), // Set the background color
                       filled: true,
-                      labelText: 'Firm Name',
-                      labelStyle: const TextStyle(
+                      hintText: 'Firm Name',
+                      hintStyle: const TextStyle(
                           color: Color.fromRGBO(0, 0, 0, 0.68),
                           fontWeight: FontWeight.bold),
                       border: OutlineInputBorder(
@@ -164,8 +164,8 @@ class RegistrationPageState extends State<RegistrationPage> {
                       fillColor:
                       const Color(0xFFD9D9D9), // Set the background color
                       filled: true,
-                      labelText: 'Proprietor Name',
-                      labelStyle: const TextStyle(
+                      hintText: 'Proprietor Name',
+                      hintStyle: const TextStyle(
                           color: Color.fromRGBO(0, 0, 0, 0.68),
                           fontWeight: FontWeight.bold),
                       border: OutlineInputBorder(
@@ -181,8 +181,8 @@ class RegistrationPageState extends State<RegistrationPage> {
                       fillColor:
                       const Color(0xFFD9D9D9), // Set the background color
                       filled: true,
-                      labelText: 'Address',
-                      labelStyle: const TextStyle(
+                      hintText: 'Address',
+                      hintStyle: const TextStyle(
                           color: Color.fromRGBO(0, 0, 0, 0.68),
                           fontWeight: FontWeight.bold),
                       border: OutlineInputBorder(
@@ -198,8 +198,8 @@ class RegistrationPageState extends State<RegistrationPage> {
                       fillColor:
                       const Color(0xFFD9D9D9), // Set the background color
                       filled: true,
-                      labelText: 'Phone number controller',
-                      labelStyle: const TextStyle(
+                      hintText: 'Phone number controller',
+                      hintStyle: const TextStyle(
                           color: Color.fromRGBO(0, 0, 0, 0.68),
                           fontWeight: FontWeight.bold),
                       border: OutlineInputBorder(
@@ -214,8 +214,8 @@ class RegistrationPageState extends State<RegistrationPage> {
                       fillColor:
                       const Color(0xFFD9D9D9), // Set the background color
                       filled: true,
-                      labelText: 'Email',
-                      labelStyle: const TextStyle(
+                      hintText: 'Email',
+                      hintStyle: const TextStyle(
                           color: Color.fromRGBO(0, 0, 0, 0.68),
                           fontWeight: FontWeight.bold),
                       border: OutlineInputBorder(
@@ -238,8 +238,8 @@ class RegistrationPageState extends State<RegistrationPage> {
                       fillColor:
                       const Color(0xFFD9D9D9), // Set the background color
                       filled: true,
-                      labelText: 'GST Number',
-                      labelStyle: const TextStyle(
+                      hintText: 'GST Number',
+                      hintStyle: const TextStyle(
                           color: Color.fromRGBO(0, 0, 0, 0.68),
                           fontWeight: FontWeight.bold),
                       border: OutlineInputBorder(
@@ -305,8 +305,6 @@ class RegistrationPageState extends State<RegistrationPage> {
                                 actions: [
                                   TextButton(
                                     onPressed: () {
-                                      // Close the current dialog box
-                                      print(widget.pref.getString("_usernameKey"));
                                       Navigator.of(context).pop();
                                       //Navigate to login page after entering all details
                                       Navigator.pushReplacement(
@@ -414,8 +412,8 @@ class LoginPageState extends State<LoginPage> {
                   decoration: InputDecoration(
                     fillColor: const Color(0xFFD9D9D9),
                     filled: true,
-                    labelText: 'Username',
-                    labelStyle: const TextStyle(
+                    hintText: 'Username',
+                    hintStyle: const TextStyle(
                       color: Color.fromRGBO(0, 0, 0, 0.68),
                       fontWeight: FontWeight.bold,
                     ),
@@ -440,8 +438,8 @@ class LoginPageState extends State<LoginPage> {
                   decoration: InputDecoration(
                     fillColor: const Color(0xFFD9D9D9),
                     filled: true,
-                    labelText: 'Password',
-                    labelStyle: const TextStyle(
+                    hintText: 'Password',
+                    hintStyle: const TextStyle(
                       color: Color.fromRGBO(0, 0, 0, 0.68),
                       fontWeight: FontWeight.bold,
                     ),

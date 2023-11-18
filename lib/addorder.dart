@@ -57,10 +57,9 @@ class AddRecordPageState extends State<AddRecordPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFF87F892),
       appBar: AppBar(
+        backgroundColor: const Color(0xFF2DA1E5),
         title: const Text('Add Record'),
-        backgroundColor: const Color(0xFF48CC56),
       ),
       body: SingleChildScrollView(
         child: Padding(
@@ -112,8 +111,7 @@ class AddRecordPageState extends State<AddRecordPage> {
               const SizedBox(height: 16.0),
               ElevatedButton(
                 style: ElevatedButton.styleFrom(
-                  backgroundColor:
-                  const Color(0xFF08A10F), // Change the button color
+                  backgroundColor: const Color(0xFF2DA1E5),
                   shape: RoundedRectangleBorder(
                     borderRadius:
                     BorderRadius.circular(20.0), // Add border radius here
@@ -139,15 +137,18 @@ class AddRecordPageState extends State<AddRecordPage> {
   }) {
     return Container(
       decoration: BoxDecoration(
-        color: const Color(0xFF55C47B),
+        color: const Color(0xFF52ADE3),
         borderRadius: BorderRadius.circular(15.0),
       ),
       child: TextFormField(
         controller: controller,
         keyboardType: keyboardType,
+        style: const TextStyle(
+          color: Colors.white, // Set the typed text color to white
+        ),
         decoration: InputDecoration(
-          labelText: labelText,
-          labelStyle: const TextStyle(
+          hintText: labelText,
+          hintStyle: const TextStyle(
             color: Colors.white,
           ),
           border: const OutlineInputBorder(

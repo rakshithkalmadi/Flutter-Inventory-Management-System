@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+// ignore: must_be_immutable
 class ProfilePage extends StatefulWidget {
   final SharedPreferences pref;
   VoidCallback refresh;
@@ -102,14 +103,8 @@ class ProfilePageState extends State<ProfilePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: const Color(0xFF2DA1E5),
       body: SingleChildScrollView(
-        child: Container(
-          decoration: const BoxDecoration(
-            image: DecorationImage(
-              image: AssetImage('assets/loginbg.jpg'),
-              fit: BoxFit.cover,
-            ),
-          ),
           child: SafeArea(
             child: Padding(
               padding: const EdgeInsets.all(16.0),
@@ -118,164 +113,54 @@ class ProfilePageState extends State<ProfilePage> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    TextFormField(
+                    CustomStyledTextFormField(
                       controller: _nameController,
-                      decoration: InputDecoration(
-                        fillColor:
-                            const Color(0xFFD9D9D9), // Set the background color
-                        filled: true,
-                        labelText: 'Username',
-                        labelStyle: const TextStyle(
-                            color: Color.fromRGBO(0, 0, 0, 0.68),
-                            fontWeight: FontWeight.bold),
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(20.0),
-                        ),
-                      ),
+                      labelText: 'Username',
                     ),
                     const SizedBox(height: 10),
-                    TextFormField(
+                    CustomStyledTextFormField(
                       controller: _passwordController,
-                      decoration: InputDecoration(
-                        fillColor:
-                            const Color(0xFFD9D9D9), // Set the background color
-                        filled: true,
-                        labelText: 'Password',
-                        labelStyle: const TextStyle(
-                            color: Color.fromRGBO(0, 0, 0, 0.68),
-                            fontWeight: FontWeight.bold),
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(20.0),
-                        ),
-                      ),
+                      labelText: 'Password',
                     ),
                     const SizedBox(height: 10),
-                    TextFormField(
+                    CustomStyledTextFormField(
                       controller: _securityQuestionController,
-                      decoration: InputDecoration(
-                        fillColor:
-                            const Color(0xFFD9D9D9), // Set the background color
-                        filled: true,
-                        labelText: 'Security Question',
-                        labelStyle: const TextStyle(
-                            color: Color.fromRGBO(0, 0, 0, 0.68),
-                            fontWeight: FontWeight.bold),
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(20.0),
-                        ),
-                      ),
+                      labelText: 'Security Question',
                     ),
                     const SizedBox(height: 10),
-                    TextFormField(
+                    CustomStyledTextFormField(
                       controller: _securityAnswerController,
-                      decoration: InputDecoration(
-                        fillColor:
-                            const Color(0xFFD9D9D9), // Set the background color
-                        filled: true,
-                        labelText: 'Security Answer',
-                        labelStyle: const TextStyle(
-                            color: Color.fromRGBO(0, 0, 0, 0.68),
-                            fontWeight: FontWeight.bold),
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(20.0),
-                        ),
-                      ),
+                      labelText: 'Security Answer',
                     ),
                     const SizedBox(height: 10),
-                    TextFormField(
+                    CustomStyledTextFormField(
                       controller: _firmNameController,
-                      decoration: InputDecoration(
-                        fillColor:
-                            const Color(0xFFD9D9D9), // Set the background color
-                        filled: true,
-                        labelText: 'Firm Name',
-                        labelStyle: const TextStyle(
-                            color: Color.fromRGBO(0, 0, 0, 0.68),
-                            fontWeight: FontWeight.bold),
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(20.0),
-                        ),
-                      ),
+                      labelText: 'Firm Name',
                     ),
                     const SizedBox(height: 10),
-                    TextFormField(
+                    CustomStyledTextFormField(
                       controller: _proprietorNameController,
-                      decoration: InputDecoration(
-                        fillColor:
-                            const Color(0xFFD9D9D9), // Set the background color
-                        filled: true,
-                        labelText: 'Proprietor Name',
-                        labelStyle: const TextStyle(
-                            color: Color.fromRGBO(0, 0, 0, 0.68),
-                            fontWeight: FontWeight.bold),
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(20.0),
-                        ),
-                      ),
+                      labelText: 'Proprietor Name',
                     ),
                     const SizedBox(height: 10),
-                    TextFormField(
+                    CustomStyledTextFormField(
                       controller: _addressController,
-                      decoration: InputDecoration(
-                        fillColor:
-                            const Color(0xFFD9D9D9), // Set the background color
-                        filled: true,
-                        labelText: 'Address',
-                        labelStyle: const TextStyle(
-                            color: Color.fromRGBO(0, 0, 0, 0.68),
-                            fontWeight: FontWeight.bold),
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(20.0),
-                        ),
-                      ),
+                      labelText: 'Address',
                     ),
                     const SizedBox(height: 10),
-                    TextFormField(
+                    CustomStyledTextFormField(
                       controller: _phoneNumberController,
-                      decoration: InputDecoration(
-                        fillColor:
-                            const Color(0xFFD9D9D9), // Set the background color
-                        filled: true,
-                        labelText: 'Phone number controller',
-                        labelStyle: const TextStyle(
-                            color: Color.fromRGBO(0, 0, 0, 0.68),
-                            fontWeight: FontWeight.bold),
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(20.0),
-                        ),
-                      ),
+                      labelText: 'Phone number controller',
                     ),
                     const SizedBox(height: 10),
-                    TextFormField(
+                    CustomStyledTextFormField(
                       controller: _emailController,
-                      decoration: InputDecoration(
-                        fillColor:
-                            const Color(0xFFD9D9D9), // Set the background color
-                        filled: true,
-                        labelText: 'Email',
-                        labelStyle: const TextStyle(
-                            color: Color.fromRGBO(0, 0, 0, 0.68),
-                            fontWeight: FontWeight.bold),
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(20.0),
-                        ),
-                      ),
+                      labelText: 'Email',
                     ),
                     const SizedBox(height: 10),
-                    TextFormField(
+                    CustomStyledTextFormField(
                       controller: _gstNumberController,
-                      decoration: InputDecoration(
-                        fillColor:
-                            const Color(0xFFD9D9D9), // Set the background color
-                        filled: true,
-                        labelText: 'GST Number',
-                        labelStyle: const TextStyle(
-                            color: Color.fromRGBO(0, 0, 0, 0.68),
-                            fontWeight: FontWeight.bold),
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(20.0),
-                        ),
-                      ),
+                      labelText: 'GST Number',
                     ),
                     const SizedBox(height: 30),
                     ElevatedButton(
@@ -314,6 +199,49 @@ class ProfilePageState extends State<ProfilePage> {
               ),
             ),
           ),
+        ),
+    );
+  }
+}
+class CustomStyledTextFormField extends StatelessWidget {
+  final TextEditingController controller;
+  final String labelText;
+
+  const CustomStyledTextFormField({super.key,
+    required this.controller,
+    required this.labelText,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return TextFormField(
+      controller: controller,
+      style: const TextStyle(
+        color: Colors.white
+      ),
+      decoration: InputDecoration(
+        filled: true,
+        fillColor: const Color(0xFF97D2F6),
+        labelText: labelText,
+        labelStyle: const TextStyle(
+          color: Colors.white, // White label text
+          fontWeight: FontWeight.bold,
+          shadows: [
+            BoxShadow(
+              color: Colors.black, // Black shadow (outline) color
+              offset: Offset(0, 0),
+              blurRadius: 5,
+            ),
+          ],
+        ),
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(20.0),
+        ),
+        enabledBorder: OutlineInputBorder(
+          borderSide: const BorderSide(
+            color: Color(0xFF000000), // Black outline color
+          ),
+          borderRadius: BorderRadius.circular(20.0),
         ),
       ),
     );
